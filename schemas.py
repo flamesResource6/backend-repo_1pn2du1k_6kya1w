@@ -38,8 +38,32 @@ class Product(BaseModel):
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
 
-# Add your own schemas here:
-# --------------------------------------------------
+# Events app schemas
+
+class Event(BaseModel):
+    """
+    Events collection schema
+    Collection name: "event"
+    """
+    title: str = Field(..., description="Event title")
+    date: str = Field(..., description="ISO date string or human-readable date")
+    venue: str = Field(..., description="Event venue")
+    description: str = Field(..., description="Short description")
+    image: str = Field(..., description="Hero image URL")
+    price: float = Field(..., ge=0, description="Ticket price")
+    tickets_available: int = Field(..., ge=0, description="Number of tickets available")
+
+class Order(BaseModel):
+    """
+    Orders collection schema
+    Collection name: "order"
+    """
+    event_id: str = Field(..., description="ID of the event")
+    name: str = Field(..., description="Buyer name")
+    email: str = Field(..., description="Buyer email")
+    quantity: int = Field(..., ge=1, description="Number of tickets")
+    total_amount: float = Field(..., ge=0, description="Total price paid")
+    status: str = Field("pending", description="Order status: pending, confirmed, cancelled")
 
 # Note: The Flames database viewer will automatically:
 # 1. Read these schemas from GET /schema endpoint
